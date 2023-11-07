@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "c:\\Users\\stefa\\source\\cplusplusshoppingcart",
+            "binaryPath": "c:\\Users\\stefa\\source\\cplusplusshoppingcart\\main.exe",
+            "binaryArgs": []
+        }
+    ]
+}
