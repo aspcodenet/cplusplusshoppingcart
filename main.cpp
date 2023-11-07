@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>      // std::stringstream
 #include "ShoppingCart.h"
+#include "httplib.h"
 
 //#define MILES_TO_KM(m,yhui) (m * 1.609)*
 
@@ -58,12 +59,19 @@ constexpr Font operator"" _percent(unsigned long long x) {
     }    
 
 
+//1. Funkar korrekt - compile time fel!!!
+//2. Date -> tar jag i veckan på video!
+//3. IDAG = avsluta med en website :) - timebox 15 minuter max!!!
+//4. EGEN TID
+
+
 
 void udlDemo(){
     Font  f1 = 3_em;
     Font  f4 = Font(Font::Measurement_Em,3);
     Font  f2 = 12_pt;
-    constexpr Font  f3 = 1100_percent;
+    constexpr Font  f3 = 999_percent;
+    constexpr Font  f44 = 100_percent;
 
     //Font font(Font::Measurement_Em, 3);
 //    Font font2(Font::Measurement_Percent, 3);
@@ -99,7 +107,7 @@ void udlDemo(){
 
 
 
-
+//
 
 
     long weightInGrams2 = 2.0_kg + 500.0_g;
@@ -109,10 +117,25 @@ void udlDemo(){
     // UDL med class - FONT och constexpr
 
 
+
+
 }
 
+
+void replaceStringInPlace(std::string& subject, const std::string& search,
+                          const std::string& replace) {
+    size_t pos = 0;
+    while ((pos = subject.find(search, pos)) != std::string::npos) {
+         subject.replace(pos, search.length(), replace);
+         pos += replace.length();
+    }
+}
+
+
+
+
 int main(){
-    udlDemo();
+    //udlDemo();
     ShoppingCart cart;
     cart.add("Coffee",3 );
     cart.add("Milk",2 );
@@ -122,7 +145,40 @@ int main(){
 
     std::stringstream strstream;
     strstream << cart ;
-    std::string result =  strstream.str();
+    std::string result2 =  strstream.str();
+    std::string result  ;
+
+
+
+
+
+
+
+    httplib::Server svr;
+    svr.Get("/hi", [](const httplib::Request &, httplib::Response &res) {
+        res.set_content("Hello World!", "text/plain");
+    });
+    svr.Get("/html", [result2](const httplib::Request &, httplib::Response &res) {
+        std::fstream    readFile("template.html", std::ios::in);
+        std::string line;
+        std::string result = "";
+        while(getline(readFile,line)){
+            replaceStringInPlace(line,"${title}", "Tjena");
+            replaceStringInPlace(line,"${name}", "Stefan Holmberg");
+            replaceStringInPlace(line,"${shoppingcart}", result2);
+            result += line;
+        }
+
+        res.set_content(result, "text/html");
+    });
+
+    svr.listen("0.0.0.0", 8080);
+
+
+
+
+
+
     
     return 0;
 }

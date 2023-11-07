@@ -1,7 +1,7 @@
 PROG = main.exe 
 SRC = main.cpp ShoppingCart.cpp
 CFLAGS = -g -std=c++17
-LIBS = 
+LIBS = -l gdi32 -l wsock32 -l ws2_32 
 CC=g++
 
 all: $(PROG)
