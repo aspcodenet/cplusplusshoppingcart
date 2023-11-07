@@ -5,5 +5,8 @@
             "binaryPath": "c:\\Users\\stefa\\source\\cplusplusshoppingcart\\main.exe",
             "binaryArgs": []
         }
-    ]
+    ],
+    "files.associations": {
+        "vector": "cpp"
+    }
 }
